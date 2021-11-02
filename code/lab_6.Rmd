@@ -51,4 +51,17 @@ ttest <-
 
 This p-value means that IF our 2 samples are drawn from populations with the same mean (i.e. if the null hypothesis is true), there is `r round(ttest$p.value,3)*100`% probability of finding sample means *at least as different* as mine by random chance.
 
+### Mann-Whitney U rank based test
+
+We use the `wilcox.test()` function to perform a two-sample rank-based ttest.
+
+```{r}
+mwu <- wilcox.test(gp_1, gp_2)
+```
+
+If these samples are drawn from a population with the same median, there is a `r round(mwu$p.value,3)*100`% chance of finding sample medians as different as ours by random chance.
+
+No significant difference in medians (Mann-Whitney U; U = `r mwu$statistic`, p-value = `r round(mwu$p.value, 3)`)
+
+The medians of group A (M = 22.4 g) and group B (M = 31.2 g) did not differ significantly (Mann-Whitney U, ...)
 
