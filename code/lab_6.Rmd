@@ -65,3 +65,61 @@ No significant difference in medians (Mann-Whitney U; U = `r mwu$statistic`, p-v
 
 The medians of group A (M = 22.4 g) and group B (M = 31.2 g) did not differ significantly (Mann-Whitney U, ...)
 
+## Simpe linear regression
+
+Two *continuous quantitative* variables that you are trying to understand the relationship between, and you think that a linear relationship makes sense. 
+
+Use the `penguins` data from {palmerpenguins}, exploring flipper length (x) versus body mass (y)
+
+```{r}
+# Use view(penguins) to look at data
+# Make an exploratory scatterplot of penguin flipper length (x-axis) versus body mass (y-axis)
+
+ggplot(data = penguins, 
+       aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point() +
+  labs(x = "Fliper Length (mm)",
+       y = "Body Mass (g)") +
+  theme_grey() +
+  geom_smooth(method = "lm") # this creates a line of best fit for the data
+```
+
+### Find the model estimates (coefficients):
+
+Use the `lm()` function for linear model
+
+```{r}
+penguin_lm <- lm(body_mass_g ~ flipper_length_mm, penguins)
+```
+
+Model coefficients: `r round(penguin_lm$coefficients, 2)`
+Flipper length coefficient: `r round(penguin_lm$coefficients[2], 2)`
+
+```{r}
+penguin_lm_tidy <- tidy(penguin_lm)
+
+penguin_lm_tidy
+```
+
+### Use broom::glance() to get output of model fit & statistical significance
+
+```{r}
+penguin_lm_glance <- glance(penguin_lm)
+
+penguin_lm_glance
+
+penguin_lm_tidy$estimate[2]
+```
+
+### Use equatiomatic::extract_eq() to return model in LaTeX
+
+```{r}
+extract_eq(model = penguin_lm, use_coefs = TRUE)
+```
+
+### Use plot() function to automatically produce diagnostic plots
+
+```{r}
+plot(penguin_lm)
+```
+
