@@ -1,0 +1,54 @@
+---
+title: "esm206_lab6"
+author: "Shayan Kaveh"
+date: "11/2/2021"
+output: html_document
+---
+
+## Set Up
+
+```{r setup, include = TRUE, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(palmerpenguins)
+library(broom)
+library(equatiomatic)
+```
+
+## Rank based test example
+
+Mann-Whitney U (non-parametric alternative to an unpaired 2-sample t-test)
+
+H0: Equal ranks (or medians) HA: Ranks are not equal (or, medians are not equal)
+
+### Create samples
+
+`set.seed()` to create "pseudorandom, but reproducible samples":
+
+```{r}
+set.seed(1414) # this will create the same random sample for anyone who uses this same seed
+gp_1 <- sample.int(20, size = 15, replace = TRUE)
+
+set.seed(1424)
+gp_2 <- sample.int(30, size = 15, replace = TRUE)
+```
+
+Take a quick look at the distributions using `hist()`:
+
+```{r}
+hist(gp_1)
+hist(gp_2)
+```
+
+Try a t-test to compare results:
+
+```{r}
+ttest <- 
+  t.test(gp_1, gp_2) 
+# if I wanted a paired t-test, I would need to include `paired = "TRUE"` within the t.test() function
+```
+
+This p-value means that IF our 2 samples are drawn from populations with the same mean (i.e. if the null hypothesis is true), there is `r round(ttest$p.value,3)*100`% probability of finding sample means *at least as different* as mine by random chance.
+
+
